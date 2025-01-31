@@ -1,6 +1,6 @@
 # GRC News Assistant
 
-A Python-based tool for collecting and analyzing GRC (Governance, Risk, and Compliance) related news articles using NewsData.io API and AI-powered analysis.
+A Python-based tool for collecting and analyzing Cybersecurity GRC (Governance, Risk, and Compliance) related news articles using NewsData.io API and AI-powered ratings with fabric AI integration.
 
 This project is inspired by and builds upon the work of several excellent open-source projects:
 
@@ -17,7 +17,7 @@ Before using this tool, ensure you have the following prerequisites installed:
    #Check python version
    python3 --version
    ```
-3. [fabric](https://github.com/danielmiessler/fabric) - Must be installed separately. I have a video walkthrough here: https://www.cpatocybersecurity.com/p/install-the-new-fabric
+3. [fabric](https://github.com/danielmiessler/fabric) - Must be installed separately. I have a step-by-step blog post with a video walkthrough here: https://www.cpatocybersecurity.com/p/install-the-new-fabric
 4. OS-specific clipboard tools:
    - macOS: Built-in with pbpaste, no additional installation needed
    - Linux: Install xclip

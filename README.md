@@ -7,8 +7,12 @@ A Python-based tool for collecting and analyzing GRC (Governance, Risk, and Comp
 Before using this tool, ensure you have the following prerequisites installed:
 
 1. Python 3.7 or higher
-2. [fabric](https://github.com/danielmiessler/fabric) - Must be installed separately
-3. OS-specific clipboard tools:
+   ```bash
+   #Check python version
+   python3 --version
+   ```
+3. [fabric](https://github.com/danielmiessler/fabric) - Must be installed separately
+4. OS-specific clipboard tools:
    - macOS: Built-in with pbpaste, no additional installation needed
    - Linux: Install xclip
      ```bash

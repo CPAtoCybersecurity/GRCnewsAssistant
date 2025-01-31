@@ -59,10 +59,13 @@ This tool requires a NewsData.io API key. Follow these steps to set it up:
 
    For macOS/Linux:
    ```bash
-   export NEWSDATA_API_KEY='your_api_key_here'
+      export NEWSDATA_API_KEY='your_api_key_here'
    ```
-   Add this line to your shell's startup file (.bashrc, .zshrc, etc.) to make it permanent.
-
+   Add this line to your shell's startup file (.bashrc, .zshrc, etc.) to make it permanent. E.g. on macOS:
+   ```
+   nano ~/.zshrc
+   ```
+   
    For Windows (Command Prompt):
    ```cmd
    set NEWSDATA_API_KEY=your_api_key_here

@@ -8,6 +8,12 @@ This project is inspired by and builds upon the work of several excellent open-s
     fabric by Daniel Miessler - Provides the AI-powered analysis capabilities with the label_and_rate pattern/prompt https://github.com/danielmiessler/fabric
     NP4k-extractor by nopslip - Influenced the article extraction and processing workflow https://github.com/nopslip/NP4k-extractor
 
+## Related Videos
+
+- [Simply Cyber](https://www.youtube.com/watch?v=IfX6CMi-bpI)
+- [CPA to Cybersecurity](https://youtu.be/1csePKEwDY0)
+- [Unsupervised Learning](https://www.youtube.com/watch?v=wPEyyigh10g)
+
 ## Prerequisites
 
 Before using this tool, ensure you have the following prerequisites installed:

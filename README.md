@@ -48,16 +48,6 @@ Before using this tool, ensure you have the following prerequisites installed:
    # With virtual environment activated:
    python -c "import nltk; nltk.download('punkt')"
    ```
-   
-4. Install Python dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-5. Set up NLTK data:
-   ```python
-   python -c "import nltk; nltk.download('punkt')"
-   ```
 
 ## API Key Setup
 

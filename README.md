@@ -27,7 +27,7 @@ Before using this tool, ensure you have the following prerequisites installed:
    git clone https://github.com/cpatocybersecurity/GRCnewsAssistant
    ```
 3.Go to the GRCnewsAssistant directory
-```bash
+   ```bash
    cd GRCnewsAssistant
    ```
 4. Install Python dependencies:

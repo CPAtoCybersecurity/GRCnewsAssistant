@@ -1,0 +1,6 @@
+requests>=2.31.0
+newspaper4k>=0.2.8
+openpyxl>=3.1.2
+lxml_html_clean>=0.2.0
+typing_extensions>=4.7.1
+nltk>=3.8.1

@@ -90,6 +90,16 @@ This tool requires a NewsData.io API key. Follow these steps to set it up:
 
 2. Run the script:
    ```bash
+   #Go to the grcnewsassistant directory if you're not already there
+   cd grcnewsassistant
+
+   #Activate the virtual enviornment if it's not already activated, e.g. for macOS/Linus:
+   source venv/bin/activate
+
+   # On Windows:
+   .\venv\Scripts\activate
+
+   #Execute the script   
    python GRCnewsAssistant.py
    ```
 

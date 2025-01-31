@@ -23,12 +23,15 @@ Before using this tool, ensure you have the following prerequisites installed:
 ## Installation
 
 1. Clone this repository or download the files
-2. Install Python dependencies:
+   ```
+   git clone https://github.com/cpatocybersecurity/GRCnewsAssistant
+   ```
+3. Install Python dependencies:
    ```bash
    pip install -r requirements.txt
    ```
 
-3. Set up NLTK data:
+4. Set up NLTK data:
    ```python
    python -c "import nltk; nltk.download('punkt')"
    ```

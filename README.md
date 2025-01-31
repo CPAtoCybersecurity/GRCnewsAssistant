@@ -27,12 +27,34 @@ Before using this tool, ensure you have the following prerequisites installed:
    git clone https://github.com/cpatocybersecurity/GRCnewsAssistant
    cd GRCnewsAssistant
    ```
+2. Create and activate a virtual environment:
+   ```
+   # Create a virtual environment
+   python3 -m venv venv
+
+   # Activate it
+   # On macOS/Linux:
+   source venv/bin/activate
+   # On Windows:
+   .\venv\Scripts\activate
+   ```
 3. Install Python dependencies:
+   ```
+   # With virtual environment activated:
+   pip install -r requirements.txt
+   ```
+4. Set up NLTK data:
+   ```
+   # With virtual environment activated:
+   python -c "import nltk; nltk.download('punkt')"
+   ```
+   
+4. Install Python dependencies:
    ```bash
    pip install -r requirements.txt
    ```
 
-4. Set up NLTK data:
+5. Set up NLTK data:
    ```python
    python -c "import nltk; nltk.download('punkt')"
    ```

@@ -10,9 +10,9 @@ This project is inspired by and builds upon the work of several excellent open-s
 
 ## Related Videos
 
-- [Simply Cyber](https://www.youtube.com/watch?v=IfX6CMi-bpI)
-- [CPA to Cybersecurity](https://youtu.be/1csePKEwDY0)
-- [Unsupervised Learning](https://www.youtube.com/watch?v=wPEyyigh10g)
+- [Simply Cyber - Is Manual GRC REALLY Slowing You Down? Automate NOW!](https://www.youtube.com/watch?v=IfX6CMi-bpI)
+- [CPA to Cybersecurity - Fabric Client Installation: Your Personal AI Ecosystem](https://youtu.be/1csePKEwDY0)
+- [Unsupervised Learning - Introducing Fabric — A Human AI Augmentation Framework](https://www.youtube.com/watch?v=wPEyyigh10g)
 
 ## Prerequisites
 

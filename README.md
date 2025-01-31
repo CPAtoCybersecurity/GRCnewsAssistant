@@ -64,7 +64,7 @@ This tool requires a NewsData.io API key. Follow these steps to set it up:
 
    #add this line to your shell's startup file to make it permanent
    export NEWSDATA_API_KEY='your_api_key_here'
-   ```
+   
    #Or .bashrc, etc. depending on your environment
    ```
    

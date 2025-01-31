@@ -60,8 +60,9 @@ This tool requires a NewsData.io API key. Follow these steps to set it up:
 ## Usage
 
 1. Prepare your keywords:
-   - Create a file named `keywords.csv` in the same directory as the script
-   - Add one keyword per line
+   - Modify the file named `keywords.csv` in the same directory as the script
+   - Modify or add one keyword per line
+   - Use "%20" where any spaces would be, e.g. "cybersecutiy%20GRC"
 
 2. Run the script:
    ```bash
@@ -71,13 +72,13 @@ This tool requires a NewsData.io API key. Follow these steps to set it up:
 The script will:
 - Search for news articles matching your keywords
 - Save the initial results to `grcdata.csv`
-- Extract article content and perform AI analysis using fabric
+- Extract article content and perform AI analysis using the label_and_rate pattern/prompt from fabric (or you can modify how ratings are determined with a custom fabric pattern)
 - Save the analyzed results to `grcdata_rated.csv`
 
 ## Output Files
 
 - `grcdata.csv`: Raw article data including dates, keywords, titles, descriptions, and URLs
-- `urls.csv`: List of article URLs for easy reference
+- `urls.csv`: List of article URLs for easy reference (and automated input to the NP4k-extractor service while you run GRCnewsAssistant.py
 - `grcdata_rated.csv`: Enhanced dataset including AI analysis results
 
 ## Error Handling

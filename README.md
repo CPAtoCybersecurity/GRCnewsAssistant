@@ -2,6 +2,12 @@
 
 A Python-based tool for collecting and analyzing GRC (Governance, Risk, and Compliance) related news articles using NewsData.io API and AI-powered analysis.
 
+This project is inspired by and builds upon the work of several excellent open-source projects:
+
+    grcAssist by Dr. Gerald Auger - The original GRC news assistant that inspired this AI-enhanced version
+    fabric by Daniel Miessler - Provides the AI-powered analysis capabilities
+    NP4k-extractor by nopslip - Influenced the article extraction and processing workflow
+
 ## Prerequisites
 
 Before using this tool, ensure you have the following prerequisites installed:
@@ -144,14 +150,6 @@ The script is compatible with:
 3. **Windows PowerShell Issues**
    - Ensure you're running with appropriate permissions
    - Try running PowerShell as administrator if needed
-
-## Credits
-
-This project builds upon the work of several excellent open-source projects:
-
-- [grcAssist](https://github.com/gerryguy311/grcAssist) by Dr. Gerald Auger - The original GRC news assistant that inspired this AI-enhanced version
-- [fabric](https://github.com/danielmiessler/fabric) by Daniel Miessler - Provides the AI-powered analysis capabilities
-- [NP4k-extractor](https://github.com/nopslip/NP4k-extractor) by nopslip - Influenced the article extraction and processing workflow
 
 ## Contributing
 

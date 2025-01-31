@@ -59,14 +59,13 @@ This tool requires a NewsData.io API key. Follow these steps to set it up:
 
    For macOS/Linux:
    ```bash
-      export NEWSDATA_API_KEY='your_api_key_here'
-   ```
-   Add this line to your shell's startup file (.bashrc, .zshrc, etc.) to make it permanent. E.g. on macOS:
-   ```
    #Edit your shell's startup file
    nano ~/.zshrc
 
-   #
+   #add this line to your shell's startup file to make it permanent
+   export NEWSDATA_API_KEY='your_api_key_here'
+   ```
+   #Or .bashrc, etc. depending on your environment
    ```
    
    For Windows (Command Prompt):
@@ -82,8 +81,8 @@ This tool requires a NewsData.io API key. Follow these steps to set it up:
 ## Usage
 
 1. Prepare your keywords:
-   - Create a file named `keywords.csv` in the same directory as the script
-   - Add one keyword per line
+   - Modify the file named `keywords.csv` in the same directory as the script, with new items of interest
+   - Add one keyword per line, or multiple words per line with "%20" in spaces between words 
 
 2. Run the script:
    ```bash

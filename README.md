@@ -4,9 +4,9 @@ A Python-based tool for collecting and analyzing GRC (Governance, Risk, and Comp
 
 This project is inspired by and builds upon the work of several excellent open-source projects:
 
-    grcAssist by Dr. Gerald Auger - The original GRC news assistant that inspired this AI-enhanced version
-    fabric by Daniel Miessler - Provides the AI-powered analysis capabilities
-    NP4k-extractor by nopslip - Influenced the article extraction and processing workflow
+    grcAssist by Dr. Gerald Auger - The original GRC news assistant https://github.com/gerryguy311/grcAssist
+    fabric by Daniel Miessler - Provides the AI-powered analysis capabilities with the label_and_rate pattern/prompt https://github.com/danielmiessler/fabric
+    NP4k-extractor by nopslip - Influenced the article extraction and processing workflow https://github.com/nopslip/NP4k-extractor
 
 ## Prerequisites
 

@@ -63,7 +63,10 @@ This tool requires a NewsData.io API key. Follow these steps to set it up:
    ```
    Add this line to your shell's startup file (.bashrc, .zshrc, etc.) to make it permanent. E.g. on macOS:
    ```
+   #Edit your shell's startup file
    nano ~/.zshrc
+
+   #
    ```
    
    For Windows (Command Prompt):

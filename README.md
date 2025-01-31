@@ -1,6 +1,6 @@
 # GRC News Assistant
 
-This Python-based tool requires minimial coding experience for users to collect and analyze Cybersecurity GRC (Governance, Risk, and Compliance) related news articles (or any topic of interest) using NewsData.io API, with and AI provided ratings powered by fabric.  You just add a few keywords into a csv file, run the script (e.g. daily), and it adds news articles to a spreadsheet, with ratings from "S Tier: (Must Consume Original Content Immediately)" to "C Tier (Maybe Skip It)."  This capability provides GRC professionals with a bank of quick-to-access relevant cyber news stories to help win hearts and minds for cyber risk reduction with executives, managers, IT practitioners and end users.
+This Python-based tool requires minimial coding experience for users to collect and analyze Cybersecurity GRC (Governance, Risk, and Compliance) related news articles (or any topic of interest) using NewsData.io API, with AI provided ratings powered by fabric.  You just add a few keywords into a csv file, run the script (e.g. daily), and it adds news articles to a spreadsheet, with ratings from "S Tier: (Must Consume Original Content Immediately)" to "C Tier (Maybe Skip It)."  This capability provides GRC professionals with a bank of quick-to-access relevant cyber news stories to help win hearts and minds for cyber risk reduction with executives, managers, IT practitioners and end users.
 
 This project is inspired by and builds upon the work of several excellent open-source projects:
 

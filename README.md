@@ -9,7 +9,7 @@ Before using this tool, ensure you have the following prerequisites installed:
 1. Python 3.7 or higher
 2. [fabric](https://github.com/danielmiessler/fabric) - Must be installed separately
 3. OS-specific clipboard tools:
-   - macOS: Built-in use of pbpaste, no additional installation needed
+   - macOS: Built-in with pbpaste, no additional installation needed
    - Linux: Install xclip
      ```bash
      # Ubuntu/Debian
@@ -22,20 +22,17 @@ Before using this tool, ensure you have the following prerequisites installed:
 
 ## Installation
 
-1. Clone this repository or download the files
-   ```
-   git clone https://github.com/cpatocybersecurity/GRCnewsAssistant
-   ```
-3. Go to the GRCnewsAssistant directory
+1. Clone the repository:
    ```bash
+   git clone https://github.com/cpatocybersecurity/GRCnewsAssistant
    cd GRCnewsAssistant
    ```
-4. Install Python dependencies:
+3. Install Python dependencies:
    ```bash
    pip install -r requirements.txt
    ```
 
-5. Set up NLTK data:
+4. Set up NLTK data:
    ```python
    python -c "import nltk; nltk.download('punkt')"
    ```
@@ -67,9 +64,8 @@ This tool requires a NewsData.io API key. Follow these steps to set it up:
 ## Usage
 
 1. Prepare your keywords:
-   - Modify the file named `keywords.csv` in the same directory as the script
-   - Modify or add one keyword per line
-   - Use "%20" where any spaces would be, e.g. "cybersecutiy%20GRC"
+   - Create a file named `keywords.csv` in the same directory as the script
+   - Add one keyword per line
 
 2. Run the script:
    ```bash
@@ -79,13 +75,13 @@ This tool requires a NewsData.io API key. Follow these steps to set it up:
 The script will:
 - Search for news articles matching your keywords
 - Save the initial results to `grcdata.csv`
-- Extract article content and perform AI analysis using the label_and_rate pattern/prompt from fabric (or you can modify how ratings are determined with a custom fabric pattern)
+- Extract article content and perform AI analysis using fabric
 - Save the analyzed results to `grcdata_rated.csv`
 
 ## Output Files
 
 - `grcdata.csv`: Raw article data including dates, keywords, titles, descriptions, and URLs
-- `urls.csv`: List of article URLs for easy reference (and automated input to the NP4k-extractor service while you run GRCnewsAssistant.py
+- `urls.csv`: List of article URLs for easy reference
 - `grcdata_rated.csv`: Enhanced dataset including AI analysis results
 
 ## Error Handling
@@ -133,3 +129,4 @@ Feel free to submit issues, fork the repository, and create pull requests for an
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+ 

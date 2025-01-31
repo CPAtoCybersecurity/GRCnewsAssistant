@@ -11,7 +11,7 @@ Before using this tool, ensure you have the following prerequisites installed:
    #Check python version
    python3 --version
    ```
-3. [fabric](https://github.com/danielmiessler/fabric) - Must be installed separately
+3. [fabric](https://github.com/danielmiessler/fabric) - Must be installed separately. I have a video walkthrough here: https://www.cpatocybersecurity.com/p/install-the-new-fabric
 4. OS-specific clipboard tools:
    - macOS: Built-in with pbpaste, no additional installation needed
    - Linux: Install xclip

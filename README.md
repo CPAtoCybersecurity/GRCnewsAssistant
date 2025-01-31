@@ -4,9 +4,9 @@ A Python-based tool for collecting and analyzing Cybersecurity GRC (Governance, 
 
 This project is inspired by and builds upon the work of several excellent open-source projects:
 
-    grcAssist by Dr. Gerald Auger - The original GRC news assistant https://github.com/gerryguy311/grcAssist
-    fabric by Daniel Miessler - Provides the AI-powered analysis capabilities with the label_and_rate pattern/prompt https://github.com/danielmiessler/fabric
-    NP4k-extractor by nopslip - Influenced the article extraction and processing workflow https://github.com/nopslip/NP4k-extractor
+- [grcAssist by Dr. Gerald Auger - The original GRC news assistant](https://github.com/gerryguy311/grcAssist)
+- [fabric by Daniel Miessler - Provides the AI-powered analysis capabilities with the label_and_rate pattern/prompt](https://github.com/danielmiessler/fabric)
+- [NP4k-extractor by nopslip - URL to fabric processing](https://github.com/nopslip/NP4k-extractor)
 
 ## Related Videos
 

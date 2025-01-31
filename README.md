@@ -9,7 +9,7 @@ Before using this tool, ensure you have the following prerequisites installed:
 1. Python 3.7 or higher
 2. [fabric](https://github.com/danielmiessler/fabric) - Must be installed separately
 3. OS-specific clipboard tools:
-   - macOS: Built-in, no additional installation needed
+   - macOS: Built-in use of pbpaste, no additional installation needed
    - Linux: Install xclip
      ```bash
      # Ubuntu/Debian

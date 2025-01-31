@@ -26,7 +26,7 @@ Before using this tool, ensure you have the following prerequisites installed:
    ```
    git clone https://github.com/cpatocybersecurity/GRCnewsAssistant
    ```
-3.Go to the GRCnewsAssistant directory
+3. Go to the GRCnewsAssistant directory
    ```bash
    cd GRCnewsAssistant
    ```

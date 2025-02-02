@@ -104,7 +104,7 @@ This tool requires a NewsData.io API key. Follow these steps to set it up:
 2. Configure fabric for your LLM of choice
    ```
    fabric --setup
-   [3] claude-3-5-sonnet-latest
+   [1] claude-3-5-haiku-latest
    ```
 
 3. Run the script:

@@ -43,12 +43,13 @@ Before using this tool, ensure you have the following prerequisites installed:
    git clone https://github.com/cpatocybersecurity/GRCnewsAssistant
    cd GRCnewsAssistant
    ```
-2. Create and activate a virtual environment:
+2. Create a virtual environment:
    ```
    # Create a virtual environment
    python3 -m venv venv
-
-   # Activate it
+   ```
+3. Activate virtual environment
+   ```
    # On macOS/Linux:
    source venv/bin/activate
    # On Windows:

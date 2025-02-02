@@ -101,7 +101,13 @@ This tool requires a NewsData.io API key. Follow these steps to set it up:
    - Modify the file named `keywords.csv` in the same directory as the script, with new items of interest
    - Add one keyword per line, or multiple words per line with "%20" in spaces between words 
 
-2. Run the script:
+2. Configure fabric for your LLM of choice
+   ```
+   fabric --setup
+   [3] claude-3-5-sonnet-latest
+   ```
+
+3. Run the script:
    ```bash
    #Go to the grcnewsassistant directory if you're not already there
    cd grcnewsassistant

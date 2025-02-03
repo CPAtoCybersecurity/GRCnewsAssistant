@@ -1,337 +1,174 @@
-#!/usr/bin/env python3
-# GRCnewsAssistant.py
-# Consolidated GRC News Assistant with AI Analysis
+# GRC News Assistant
 
-import csv
-import requests
-import datetime
-import time
-import logging
-import json
-import tempfile
-import os
-import subprocess
-import platform
-import sys
-import urllib.parse
-from newspaper import Article
-from typing import List, Dict, Any
+This Python-based tool requires minimal coding experience for users to collect Cybersecurity Governance, Risk, and Compliance related news articles (or any topic of interest) using the NewsData.io API, with ratings powered by Fabric AI. You just add keywords of interest to a CSV file, run the script (e.g., daily), and it adds news articles to a spreadsheet, with ratings from "S Tier (Must Consume Original Content Immediately)" to "C Tier (Maybe Skip It)." This capability provides GRC professionals with a bank of quick-to-access relevant cyber news stories to help win hearts and minds for cyber risk reduction with executives, managers, IT practitioners, and end users.
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
+This project is inspired by and builds upon the work of several excellent open-source projects:
 
-def get_api_key() -> str:
-    """Get NewsData.io API key from environment variable."""
-    api_key = os.getenv('NEWSDATA_API_KEY')
-    if not api_key:
-        logger.error("""
-NewsData.io API key not found!
+- [grcAssist by Dr. Gerald Auger - The original GRC news assistant](https://github.com/gerryguy311/grcAssist)
+- [fabric by Daniel Miessler - Provides the AI-powered analysis capabilities with the label_and_rate pattern/prompt](https://github.com/danielmiessler/fabric)
+- [NP4k-extractor by nopslip - URL to fabric processing](https://github.com/nopslip/NP4k-extractor)
 
-Please set your API key as an environment variable:
+## Related Videos
 
-For macOS/Linux:
-    export NEWSDATA_API_KEY='your_api_key_here'
+- [Simply Cyber - Is Manual GRC REALLY Slowing You Down? Automate NOW!](https://www.youtube.com/watch?v=IfX6CMi-bpI)
+- [CPA to Cybersecurity - Fabric Client Installation: Your Personal AI Ecosystem](https://youtu.be/1csePKEwDY0)
+- [Unsupervised Learning - Introducing Fabric — A Human AI Augmentation Framework](https://www.youtube.com/watch?v=wPEyyigh10g)
 
-For Windows (Command Prompt):
-    set NEWSDATA_API_KEY=your_api_key_here
+## Prerequisites
 
-For Windows (PowerShell):
-    $env:NEWSDATA_API_KEY='your_api_key_here'
+Before using this tool, ensure you have the following prerequisites installed:
 
-You can add this to your shell's startup file (.bashrc, .zshrc, etc.) 
-to make it permanent.
-""")
-        sys.exit(1)
-    return api_key
+1. Python 3.7 or higher
+   ```bash
+   #Check python version
+   python3 --version
+   ```
+3. [fabric](https://github.com/danielmiessler/fabric) - Must be installed separately. I have a step-by-step blog post with a video walkthrough here: https://www.cpatocybersecurity.com/p/install-the-new-fabric
+4. OS-specific clipboard tools:
+   - macOS: Built-in with pbpaste, no additional installation needed
+   - Linux: Install xclip
+     ```bash
+     # Ubuntu/Debian
+     sudo apt-get install xclip
+     
+     # Fedora
+     sudo dnf install xclip
+     ```
+   - Windows: Built-in PowerShell commands used, no additional installation needed
 
-def get_clipboard_command() -> List[str]:
-    """Get the appropriate clipboard command based on OS."""
-    system = platform.system().lower()
-    
-    if system == 'darwin':  # macOS
-        return ['pbpaste']
-    elif system == 'linux':
-        # Check if xclip is installed
-        try:
-            subprocess.run(['xclip', '-version'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            return ['xclip', '-selection', 'clipboard', '-o']
-        except FileNotFoundError:
-            logger.error("""
-xclip not found! On Linux, please install xclip:
+## Installation
 
-For Ubuntu/Debian:
-    sudo apt-get install xclip
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/cpatocybersecurity/GRCnewsAssistant
+   cd GRCnewsAssistant
+   ```
+2. Create a virtual environment:
+   ```
+   # Create a virtual environment
+   python3 -m venv venv
+   ```
+3. Activate virtual environment
+   ```
+   # On macOS/Linux:
+   source venv/bin/activate
+   # On Windows:
+   .\venv\Scripts\activate
+   ```
+3. Install Python dependencies:
+   ```
+   # With virtual environment activated:
+   pip install -r requirements.txt
+   ```
+4. Set up NLTK data:
+   ```
+   # With virtual environment activated:
+   python -c "import nltk; nltk.download('punkt')"
+   ```
 
-For Fedora:
-    sudo dnf install xclip
+## API Key Setup
 
-For other distributions, use your package manager to install xclip.
-""")
-            sys.exit(1)
-    elif system == 'windows':
-        return ['powershell.exe', '-command', 'Get-Clipboard']
-    else:
-        logger.error(f"Unsupported operating system: {system}")
-        sys.exit(1)
+This tool requires a NewsData.io API key. Follow these steps to set it up:
 
-def read_keywords(filename: str = "keywords.csv") -> List[str]:
-    """Read and decode keywords from CSV file."""
-    try:
-        with open(filename, 'r') as file:
-            reader = csv.reader(file)
-            return [urllib.parse.unquote(row[0]) for row in reader]
-    except Exception as e:
-        logger.error(f"Error reading keywords file: {e}")
-        return []
+1. Sign up for a free account at [NewsData.io](https://newsdata.io)
+2. Get your API key from the dashboard
+3. Set your API key as an environment variable:
 
-def search_news(keyword: str, api_key: str, category: str = "technology", language: str = "en") -> List[Dict]:
-    """Search NewsData.io API for articles matching keyword."""
-    url = f"https://newsdata.io/api/1/news?apikey={api_key}&q={keyword}&language={language}&category={category}"
-    try:
-        response = requests.get(url)
-        data = response.json()
-        
-        if data["status"] == "success":
-            articles = []
-            for article in data["results"]:
-                articles.append({
-                    "date": datetime.date.today().strftime("%Y-%m-%d"),
-                    "keyword": keyword,
-                    "headline": article["title"],
-                    "description": article["description"],
-                    "url": article["link"]
-                })
-            return articles
-        else:
-            logger.error(f"API request failed: {data.get('results', 'No error message')}")
-            return []
-    except Exception as e:
-        logger.error(f"Error fetching news: {e}")
-        return []
+   For macOS/Linux:
+   ```bash
+   #Edit your shell's startup file
+   nano ~/.zshrc
 
-def clean_and_validate_csv(filename: str, header: List[str]) -> List[Dict]:
-    """Read, clean, and validate CSV data."""
-    data = []
-    if not os.path.exists(filename):
-        return data
-        
-    try:
-        with open(filename, 'r', newline='', encoding='utf-8') as csvfile:
-            reader = csv.DictReader(csvfile)
-            
-            # Validate header matches expected structure
-            if reader.fieldnames != header:
-                logger.warning(f"Header mismatch in {filename}. Expected: {header}, Found: {reader.fieldnames}")
-                return data
-                
-            # Read and clean data
-            for row in reader:
-                # Skip completely empty rows
-                if not any(row.values()):
-                    continue
-                    
-                # Validate row has all required fields
-                if all(row.get(field) for field in header):
-                    data.append(row)
-                else:
-                    logger.warning(f"Skipping malformed row in {filename}: {row}")
-                    
-        return data
-    except Exception as e:
-        logger.error(f"Error reading {filename}: {e}")
-        return data
+   #add this line to your shell's startup file to make it permanent
+   export NEWSDATA_API_KEY='your_api_key_here'
+   
+   #Or .bashrc, etc. depending on your environment
+   ```
+   
+   For Windows (Command Prompt):
+   ```cmd
+   set NEWSDATA_API_KEY=your_api_key_here
+   ```
 
-def save_urls(articles: List[Dict], filename: str = "urls.csv"):
-    """Save URLs to separate CSV file."""
-    try:
-        with open(filename, 'w', newline='', encoding='utf-8') as csvfile:
-            writer = csv.writer(csvfile)
-            # Only write valid URLs
-            for article in articles:
-                if article and article.get("url"):
-                    writer.writerow([article["url"]])
-    except Exception as e:
-        logger.error(f"Error writing URLs to {filename}: {e}")
+   For Windows (PowerShell):
+   ```powershell
+   $env:NEWSDATA_API_KEY='your_api_key_here'
+   ```
 
-def extract_article_content(url: str) -> Dict:
-    """Extract article content using newspaper4k."""
-    article = Article(url, fetch_images=False)
-    try:
-        article.download()
-        article.parse()
-        article.nlp()
-        
-        return {
-            "title": article.title or "Not Found",
-            "keywords": article.keywords if article.keywords else [],
-            "authors": article.authors if article.authors else ["Not Found"],
-            "summary": article.summary or "Not Found",
-            "text": article.text or "Not Found",
-            "publish_date": article.publish_date.isoformat() if article.publish_date else "Not Found",
-            "url": url
-        }
-    except Exception as e:
-        logger.error(f"Failed to process article from {url}: {e}")
-        return None
+## Usage
 
-def analyze_with_fabric(content: Dict) -> Dict:
-    """Process article content with fabric label_and_rate."""
-    try:
-        # Create temporary file with formatted content
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.txt', delete=False) as temp_file:
-            formatted_content = (
-                f"Title: {content['title']}\n"
-                f"Authors: {', '.join(content['authors'])}\n"
-                f"Keywords: {', '.join(content['keywords'])}\n"
-                f"Summary: {content['summary']}\n"
-                f"URL: {content['url']}\n"
-            )
-            temp_file.write(formatted_content)
-            temp_file_path = temp_file.name
+1. Prepare your keywords:
+   - Modify the file named `keywords.csv` in the same directory as the script, with new items of interest
+   - Add one keyword per line, or multiple words per line with "%20" in spaces between words 
 
-        # Copy content to clipboard using OS-specific command
-        with open(temp_file_path, 'r') as f:
-            subprocess.run(['pbcopy' if platform.system() == 'Darwin' else 'clip'], 
-                         input=f.read().encode(), 
-                         check=True)
-        
-        # Create temporary output file for fabric results
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.md', delete=False) as output_file:
-            output_path = output_file.name
-        
-        # Run fabric command with OS-specific clipboard command
-        clipboard_cmd = get_clipboard_command()
-        cmd = f'{" ".join(clipboard_cmd)} | fabric -p label_and_rate -o "{output_path}"'
-        subprocess.run(cmd, shell=True, timeout=15, check=True)
-        
-        # Read fabric results
-        with open(output_path, 'r') as f:
-            fabric_data = json.loads(f.read())
-        
-        # Cleanup temporary files
-        os.unlink(temp_file_path)
-        os.unlink(output_path)
-        
-        return fabric_data
-    except Exception as e:
-        logger.error(f"Error in fabric analysis: {e}")
-        return None
+2. Configure fabric for your LLM of choice
+   ```
+   fabric --setup
+   [1] claude-3-5-haiku-latest
+   ```
 
-def create_rated_csv(articles: List[Dict], analysis_results: List[Dict]):
-    """Create or update grcdata_rated.csv with fabric analysis results while preserving historical data."""
-    filename = 'grcdata_rated.csv'
-    header = [
-        'date', 'keyword', 'title', 'description', 'url',
-        'one-sentence-summary', 'labels', 'rating',
-        'rating-explanation', 'quality-score', 'quality-score-explanation'
-    ]
-    
-    try:
-        # Get existing clean data
-        existing_data = clean_and_validate_csv(filename, header)
-        
-        # Create set of existing URLs to avoid duplicates
-        existing_urls = {row['url'] for row in existing_data}
-        
-        # Write all data
-        with open(filename, 'w', newline='', encoding='utf-8') as csvfile:
-            writer = csv.writer(csvfile)
-            writer.writerow(header)
-            
-            # Write existing data
-            for row in existing_data:
-                writer.writerow([row[field] for field in header])
-            
-            # Write new data with analysis
-            for article, analysis in zip(articles, analysis_results):
-                if article and article.get('url'):
-                    # Skip if URL already exists in historical data
-                    if article['url'] in existing_urls:
-                        continue
-                        
-                    if analysis:
-                        writer.writerow([
-                            article['date'],
-                            article['keyword'],
-                            article['headline'],
-                            article['description'],
-                            article['url'],
-                            analysis.get('one-sentence-summary', ''),
-                            analysis.get('labels', ''),
-                            analysis.get('rating', ''),
-                            '; '.join(analysis.get('rating-explanation', [])),
-                            str(analysis.get('quality-score', '')),
-                            '; '.join(analysis.get('quality-score-explanation', []))
-                        ])
-                    else:
-                        # Write without analysis if it failed, but still include article data
-                        writer.writerow([
-                            article['date'],
-                            article['keyword'],
-                            article['headline'],
-                            article['description'],
-                            article['url'],
-                            '', '', '', '', '', ''
-                        ])
-    except Exception as e:
-        logger.error(f"Error updating grcdata.csv with analysis: {e}")
+3. Run the script:
+   ```bash
+   #Go to the grcnewsassistant directory if you're not already there
+   cd grcnewsassistant
 
-def main():
-    """Main execution flow."""
-    logger.info("Starting GRC News Assistant")
-    
-    # Get API key from environment variable
-    api_key = get_api_key()
-    
-    # Read keywords
-    keywords = read_keywords()
-    if not keywords:
-        logger.error("No keywords found in keywords.csv")
-        return
-    
-    # Collect articles
-    all_articles = []
-    for keyword in keywords:
-        logger.info(f"Searching for articles about: {keyword}")
-        articles = search_news(keyword.strip(), api_key)
-        if articles:
-            all_articles.extend(articles)
-            logger.info(f"Found {len(articles)} articles for '{keyword}'")
-        else:
-            logger.warning(f"No articles found for '{keyword}'")
-    
-    if not all_articles:
-        logger.error("No articles found for any keywords")
-        return
-    
-    # Save URLs
-    save_urls(all_articles)
-    logger.info(f"Found {len(all_articles)} articles")
-    
-    # Process articles with newspaper4k and fabric
-    logger.info("Processing articles with newspaper4k and fabric")
-    analysis_results = []
-    
-    for article in all_articles:
-        url = article["url"]
-        logger.info(f"Processing: {url}")
-        
-        # Extract content
-        content = extract_article_content(url)
-        if content:
-            # Analyze with fabric
-            analysis = analyze_with_fabric(content)
-            analysis_results.append(analysis)
-        else:
-            analysis_results.append(None)
-    
-    # Create rated CSV with analysis results
-    create_rated_csv(all_articles, analysis_results)
-    logger.info("Completed processing with AI analysis. Results saved to grcdata_rated.csv")
+   #Activate the virtual enviornment if it's not already activated, e.g. for macOS/Linus:
+   source venv/bin/activate
 
-if __name__ == "__main__":
-    main()
+   # On Windows:
+   .\venv\Scripts\activate
+
+   #Execute the script   
+   python GRCnewsAssistant.py
+   ```
+
+The script will:
+- Search for news articles matching your keywords
+- Save the initial results to `grcdata.csv`
+- Extract article content and perform AI analysis using fabric
+- Save the analyzed results to `grcdata_rated.csv`
+
+## Output Files
+
+- `grcdata.csv`: Raw article data including dates, keywords, titles, descriptions, and URLs
+- `urls.csv`: List of article URLs for easy reference
+- `grcdata_rated.csv`: Enhanced dataset including AI analysis results
+
+## Error Handling
+
+The script includes comprehensive error handling and will provide clear messages if:
+- The API key is not set
+- Required clipboard tools are missing (Linux)
+- Keywords file is missing or empty
+- API requests fail
+- Article processing encounters issues
+
+## Operating System Compatibility
+
+The script is compatible with:
+- macOS (uses built-in pbcopy/pbpaste)
+- Linux (requires xclip)
+- Windows (uses PowerShell's Get-Clipboard)
+
+## Troubleshooting
+
+1. **API Key Issues**
+   - Ensure the environment variable is set correctly
+   - Check if your API key is valid at NewsData.io
+
+2. **Linux Clipboard Issues**
+   - Verify xclip is installed: `which xclip`
+   - Try reinstalling xclip if needed
+
+3. **Windows PowerShell Issues**
+   - Ensure you're running with appropriate permissions
+   - Try running PowerShell as administrator if needed
+
+## Contributing
+
+Feel free to submit issues, fork the repository, and create pull requests for any improvements.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+ 

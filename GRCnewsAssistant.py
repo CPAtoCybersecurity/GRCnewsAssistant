@@ -113,29 +113,37 @@ def search_news(keyword: str, api_key: str, category: str = "technology", langua
         logger.error(f"Error fetching news: {e}")
         return []
 
-def save_to_csv(articles: List[Dict], filename: str = "grcdata.csv"):
-    """Save articles to CSV file."""
-    try:
-        # Ensure file exists with header
-        if not os.path.exists(filename):
-            with open(filename, 'w', newline='', encoding='utf-8') as csvfile:
-                writer = csv.writer(csvfile)
-                writer.writerow(['date', 'keyword', 'title', 'description', 'url'])
+def clean_and_validate_csv(filename: str, header: List[str]) -> List[Dict]:
+    """Read, clean, and validate CSV data."""
+    data = []
+    if not os.path.exists(filename):
+        return data
         
-        # Append valid articles
-        with open(filename, 'a', newline='', encoding='utf-8') as csvfile:
-            writer = csv.writer(csvfile)
-            for article in articles:
-                if article and all(article.get(key) for key in ["date", "keyword", "headline", "description", "url"]):
-                    writer.writerow([
-                        article["date"],
-                        article["keyword"],
-                        article["headline"],
-                        article["description"],
-                        article["url"]
-                    ])
+    try:
+        with open(filename, 'r', newline='', encoding='utf-8') as csvfile:
+            reader = csv.DictReader(csvfile)
+            
+            # Validate header matches expected structure
+            if reader.fieldnames != header:
+                logger.warning(f"Header mismatch in {filename}. Expected: {header}, Found: {reader.fieldnames}")
+                return data
+                
+            # Read and clean data
+            for row in reader:
+                # Skip completely empty rows
+                if not any(row.values()):
+                    continue
+                    
+                # Validate row has all required fields
+                if all(row.get(field) for field in header):
+                    data.append(row)
+                else:
+                    logger.warning(f"Skipping malformed row in {filename}: {row}")
+                    
+        return data
     except Exception as e:
-        logger.error(f"Error writing to {filename}: {e}")
+        logger.error(f"Error reading {filename}: {e}")
+        return data
 
 def save_urls(articles: List[Dict], filename: str = "urls.csv"):
     """Save URLs to separate CSV file."""
@@ -214,23 +222,37 @@ def analyze_with_fabric(content: Dict) -> Dict:
         return None
 
 def create_rated_csv(articles: List[Dict], analysis_results: List[Dict]):
-    """Create grcdata_rated.csv with fabric analysis results."""
+    """Create or update grcdata_rated.csv with fabric analysis results while preserving historical data."""
+    filename = 'grcdata_rated.csv'
+    header = [
+        'date', 'keyword', 'title', 'description', 'url',
+        'one-sentence-summary', 'labels', 'rating',
+        'rating-explanation', 'quality-score', 'quality-score-explanation'
+    ]
+    
     try:
-        # Create new file with analyzed data
-        with open('grcdata_rated.csv', 'w', newline='', encoding='utf-8') as csvfile:
+        # Get existing clean data
+        existing_data = clean_and_validate_csv(filename, header)
+        
+        # Create set of existing URLs to avoid duplicates
+        existing_urls = {row['url'] for row in existing_data}
+        
+        # Write all data
+        with open(filename, 'w', newline='', encoding='utf-8') as csvfile:
             writer = csv.writer(csvfile)
-            
-            # Write header
-            header = [
-                'date', 'keyword', 'title', 'description', 'url',
-                'one-sentence-summary', 'labels', 'rating',
-                'rating-explanation', 'quality-score', 'quality-score-explanation'
-            ]
             writer.writerow(header)
             
-            # Write data with analysis
+            # Write existing data
+            for row in existing_data:
+                writer.writerow([row[field] for field in header])
+            
+            # Write new data with analysis
             for article, analysis in zip(articles, analysis_results):
-                if article and article.get('url'):  # Ensure article data is valid
+                if article and article.get('url'):
+                    # Skip if URL already exists in historical data
+                    if article['url'] in existing_urls:
+                        continue
+                        
                     if analysis:
                         writer.writerow([
                             article['date'],
@@ -286,10 +308,9 @@ def main():
         logger.error("No articles found for any keywords")
         return
     
-    # Save initial results
-    save_to_csv(all_articles)
+    # Save URLs
     save_urls(all_articles)
-    logger.info(f"Saved {len(all_articles)} articles to CSV files")
+    logger.info(f"Found {len(all_articles)} articles")
     
     # Process articles with newspaper4k and fabric
     logger.info("Processing articles with newspaper4k and fabric")
@@ -310,7 +331,7 @@ def main():
     
     # Create rated CSV with analysis results
     create_rated_csv(all_articles, analysis_results)
-    logger.info("Completed processing with AI analysis. Results saved to grcdata.csv and grcdata_rated.csv")
+    logger.info("Completed processing with AI analysis. Results saved to grcdata_rated.csv")
 
 if __name__ == "__main__":
     main()

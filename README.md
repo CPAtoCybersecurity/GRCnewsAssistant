@@ -124,13 +124,11 @@ This tool requires a NewsData.io API key. Follow these steps to set it up:
 
 The script will:
 - Search for news articles matching your keywords
-- Save the initial results to `grcdata.csv`
 - Extract article content and perform AI analysis using fabric
 - Save the analyzed results to `grcdata_rated.csv`
 
 ## Output Files
 
-- `grcdata.csv`: Raw article data including dates, keywords, titles, descriptions, and URLs
 - `urls.csv`: List of article URLs for easy reference
 - `grcdata_rated.csv`: Enhanced dataset including AI analysis results
 

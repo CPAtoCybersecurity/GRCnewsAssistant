@@ -76,7 +76,7 @@ This tool requires a NewsData.io API key. Follow these steps to set it up:
 
    For macOS/Linux:
    ```bash
-   #Edit your shell's startup file
+   #Edit your "Z Shell's" configuration file for aliases, startup commands and environmental variables
    nano ~/.zshrc
 
    #add this line to your shell's startup file to make it permanent

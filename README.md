@@ -123,8 +123,8 @@ This tool requires a NewsData.io API key. Follow these steps to set it up:
    ```
 
 The script will:
-- Search for news articles matching your keywords
-- Extract article content and perform AI analysis using fabric
+- Search for news articles matching your keywords (using NewsData.io)
+- Extract article content (with Newspaper4k) and rate the content using the fabric [label_and_rate](https://github.com/danielmiessler/fabric/blob/main/patterns/label_and_rate/system.md) pattern/prompt and your LLM of choice
 - Save the analyzed results to `grcdata_rated.csv`
 
 ## Output Files
